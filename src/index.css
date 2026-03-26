@@ -1,0 +1,760 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════
+   Thmanyah Brand Design System
+   Based on Thmanyah Brand Identity v2.0
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Font Face Declarations ── */
+
+/* Headlines — Thmanyah Serif Display */
+@font-face {
+  font-family: 'Thmanyah Serif Display';
+  src: url('/Usable/Thmanyahserifdisplay12-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Serif Display';
+  src: url('/Usable/Thmanyahserifdisplay12-Reg.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Serif Display';
+  src: url('/Usable/Thmanyahserifdisplay12-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Serif Display';
+  src: url('/Usable/Thmanyahserifdisplay12-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Serif Display';
+  src: url('/Usable/Thmanyahserifdisplay12-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Body Text — Thmanyah Serif Text */
+@font-face {
+  font-family: 'Thmanyah Serif Text';
+  src: url('/Usable/Thmanyahseriftext12-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Serif Text';
+  src: url('/Usable/Thmanyahseriftext12-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Serif Text';
+  src: url('/Usable/Thmanyahseriftext12-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Serif Text';
+  src: url('/Usable/Thmanyahseriftext12-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Serif Text';
+  src: url('/Usable/Thmanyahseriftext12-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Digital / UI — Thmanyah Sans */
+@font-face {
+  font-family: 'Thmanyah Sans';
+  src: url('/Usable/Thmanyahsans12-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Sans';
+  src: url('/Usable/Thmanyahsans12-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Sans';
+  src: url('/Usable/Thmanyahsans12-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Sans';
+  src: url('/Usable/Thmanyahsans12-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Thmanyah Sans';
+  src: url('/Usable/Thmanyahsans12-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Design Tokens ── */
+
+@layer base {
+  :root {
+    /* ── Light Mode ── */
+    --background: 0 0% 98%;            /* #FAFAFA */
+    --foreground: 222 47% 11%;         /* #111827 */
+
+    --card: 0 0% 100%;                 /* #FFFFFF */
+    --card-foreground: 222 47% 11%;    /* #111827 */
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 155 100% 38%;           /* #00C17A Brand Green */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 14% 96%;          /* #F3F4F6 */
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 220 14% 96%;              /* #F3F4F6 */
+    --muted-foreground: 220 9% 46%;    /* #6B7280 */
+
+    --accent: 155 100% 38%;            /* #00C17A */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 8 88% 58%;          /* #F24935 */
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;             /* #E5E7EB */
+    --input: 220 13% 91%;
+    --ring: 155 100% 38%;
+
+    --success: 155 100% 38%;
+    --warning: 43 100% 52%;
+    --info: 213 100% 49%;
+
+    --radius: 0.75rem;
+
+    /* ── Sidebar (Light) ── */
+    --sidebar-background: 0 0% 100%;           /* #FFFFFF */
+    --sidebar-foreground: 222 47% 11%;         /* #111827 */
+    --sidebar-primary: 155 100% 38%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 96%;             /* #F3F4F6 */
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 220 13% 91%;             /* #E5E7EB */
+    --sidebar-ring: 155 100% 38%;
+    --sidebar-muted: 218 11% 65%;              /* #9CA3AF */
+
+    /* ── Thmanyah Extended Palette ── */
+    --thmanyah-green: 155 100% 38%;
+    --thmanyah-green-light: 136 52% 81%;
+    --thmanyah-blue: 213 100% 49%;
+    --thmanyah-red: 8 88% 58%;
+    --thmanyah-amber: 43 100% 52%;
+    --thmanyah-burgundy: 333 100% 25%;
+    --thmanyah-peach: 18 100% 72%;
+    --thmanyah-mint: 131 43% 79%;
+    --thmanyah-sky: 185 66% 71%;
+
+    /* ── Score Gradation ── */
+    --score-excellent: 155 100% 38%;
+    --score-good: 131 43% 79%;
+    --score-average: 43 100% 52%;
+    --score-below-average: 18 100% 72%;
+    --score-poor: 8 88% 58%;
+  }
+
+  .dark {
+    /* ── Dark Mode ── */
+    --background: 240 20% 5%;          /* #0A0A0F */
+    --foreground: 220 14% 96%;         /* #F3F4F6 */
+
+    --card: 240 18% 8%;               /* #111118 */
+    --card-foreground: 220 14% 96%;
+
+    --popover: 240 18% 8%;
+    --popover-foreground: 220 14% 96%;
+
+    --primary: 155 100% 38%;           /* #00C17A */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 18% 8%;
+    --secondary-foreground: 220 14% 96%;
+
+    --muted: 240 24% 15%;              /* #1E1E2E */
+    --muted-foreground: 218 11% 65%;   /* #9CA3AF */
+
+    --accent: 155 100% 38%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 8 88% 58%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 24% 15%;             /* #1E1E2E */
+    --input: 240 24% 15%;
+    --ring: 155 100% 38%;
+
+    --success: 155 100% 38%;
+    --warning: 43 100% 52%;
+    --info: 213 100% 55%;
+
+    /* ── Sidebar (Dark) ── */
+    --sidebar-background: 240 18% 8%;         /* #111118 */
+    --sidebar-foreground: 220 14% 96%;        /* #F3F4F6 */
+    --sidebar-primary: 155 100% 38%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 24% 15%;            /* #1E1E2E */
+    --sidebar-accent-foreground: 220 14% 96%;
+    --sidebar-border: 240 24% 15%;            /* #1E1E2E */
+    --sidebar-ring: 155 100% 38%;
+    --sidebar-muted: 220 9% 46%;              /* #6B7280 */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Force English/Western numerals everywhere */
+    font-feature-settings: "tnum" on, "lnum" on;
+    text-rendering: optimizeLegibility;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    direction: rtl;
+    font-family: 'Thmanyah Sans', 'Segoe UI', 'Helvetica Neue', sans-serif;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "kern" 1;
+    font-kerning: normal;
+  }
+
+  img, svg {
+    image-rendering: auto;
+    -webkit-backface-visibility: hidden;
+  }
+
+  /* Force English numerals globally */
+  * {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Thmanyah Serif Display', Georgia, serif;
+    @apply font-bold;
+  }
+
+  h4, h5, h6 {
+    font-family: 'Thmanyah Sans', 'Segoe UI', sans-serif;
+    @apply font-bold;
+  }
+
+  p, li, span, td, th, label, input, textarea, select {
+    font-family: 'Thmanyah Sans', 'Segoe UI', sans-serif;
+  }
+}
+
+@layer components {
+  /* ── Thmanyah Highlight Style ── */
+  .th-highlight {
+    @apply inline px-2 py-0.5 rounded;
+    background-color: hsl(var(--thmanyah-green-light));
+  }
+
+  .th-highlight-yellow {
+    @apply inline px-2 py-0.5 rounded;
+    background-color: #F9E59E;
+  }
+
+  .th-highlight-pink {
+    @apply inline px-2 py-0.5 rounded;
+    background-color: #FFA5C6;
+  }
+
+  .th-highlight-blush {
+    @apply inline px-2 py-0.5 rounded;
+    background-color: #FFD1C4;
+  }
+
+  /* ── Score card styles ── */
+  .th-score-excellent {
+    background-color: hsl(var(--score-excellent) / 0.12);
+    color: hsl(var(--score-excellent));
+  }
+  .th-score-good {
+    background-color: hsl(var(--score-good) / 0.2);
+    color: #2d7a3e;
+  }
+  .th-score-average {
+    background-color: hsl(var(--score-average) / 0.15);
+    color: #9a7b00;
+  }
+  .th-score-below-average {
+    background-color: hsl(var(--score-below-average) / 0.15);
+    color: #c45a20;
+  }
+  .th-score-poor {
+    background-color: hsl(var(--score-poor) / 0.12);
+    color: hsl(var(--score-poor));
+  }
+
+  /* ── Thmanyah Card ── */
+  .th-card {
+    @apply bg-card rounded-2xl p-6 shadow-sm;
+  }
+
+  /* ── Metric Bar ── */
+  .th-metric-bar {
+    @apply h-2 rounded-full;
+    background-color: hsl(var(--muted));
+  }
+  .th-metric-bar-fill {
+    @apply h-full rounded-full transition-all duration-500;
+    background-color: hsl(var(--thmanyah-green));
+  }
+
+  /* ── Display font utility ── */
+  .font-display {
+    font-family: 'Thmanyah Serif Display', Georgia, serif;
+  }
+
+  .font-body {
+    font-family: 'Thmanyah Serif Text', Georgia, serif;
+  }
+
+  .font-ui {
+    font-family: 'Thmanyah Sans', 'Segoe UI', sans-serif;
+  }
+}
+
+@layer utilities {
+  .font-bold-extra {
+    font-weight: 700;
+  }
+
+  /* Force English/Western numerals */
+  .nums-en {
+    font-variant-numeric: tabular-nums lining-nums;
+    font-feature-settings: "tnum" on, "lnum" on;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Splash Intro Animations
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Floating background particles */
+.splash-particle {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: rgba(0, 193, 122, 0.3);
+  border-radius: 50%;
+  animation: splash-float ease-in-out infinite;
+}
+
+@keyframes splash-float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-40px) scale(1.5);
+    opacity: 0.3;
+  }
+  75% {
+    opacity: 0.5;
+  }
+}
+
+/* Orbiting social media icons */
+.splash-orbit-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  animation: splash-orbit-appear 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+             splash-orbit-rotate 20s linear infinite;
+  animation-delay: var(--orbit-delay), calc(var(--orbit-delay) + 0.6s);
+  opacity: 0;
+  transform-origin: center center;
+}
+
+@keyframes splash-orbit-appear {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--orbit-angle)) translateX(0);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--orbit-angle)) translateX(var(--orbit-radius));
+  }
+}
+
+@keyframes splash-orbit-rotate {
+  from {
+    transform: translate(-50%, -50%) rotate(var(--orbit-angle)) translateX(var(--orbit-radius));
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(calc(var(--orbit-angle) + 360deg)) translateX(var(--orbit-radius));
+  }
+}
+
+/* Connection lines pulse */
+.splash-connection-line {
+  animation: splash-line-pulse 2s ease-in-out infinite;
+}
+
+@keyframes splash-line-pulse {
+  0%, 100% { opacity: 0.05; }
+  50% { opacity: 0.2; }
+}
+
+/* Shooting stars */
+.splash-shooting-star {
+  position: absolute;
+  width: 80px;
+  height: 1px;
+  left: -100px;
+  background: linear-gradient(to left, transparent, rgba(255,255,255,0.6), transparent);
+  animation: splash-shoot ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes splash-shoot {
+  0% { transform: translateX(0) rotate(-15deg); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translateX(calc(100vw + 200px)) rotate(-15deg); opacity: 0; }
+}
+
+/* Sentiment meteors for splash */
+.splash-sentiment-meteor {
+  position: absolute;
+  left: -250px;
+  animation: splash-meteor-fly linear forwards;
+  opacity: 0;
+}
+
+@keyframes splash-meteor-fly {
+  0% { transform: translateX(0); opacity: 0; }
+  5% { opacity: 0.85; }
+  85% { opacity: 0.85; }
+  100% { transform: translateX(calc(100vw + 300px)); opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   App Layout & Sidebar Animations
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Page enter animation */
+.page-enter {
+  animation: page-slide-in 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes page-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Sidebar nav item hover glow */
+.sidebar-nav-item {
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.sidebar-nav-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 0.75rem;
+  background: linear-gradient(90deg, transparent, hsl(155 100% 38% / 0.05), transparent);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.sidebar-nav-item:hover::before {
+  opacity: 1;
+}
+
+/* Active sidebar indicator bar */
+.sidebar-active-indicator {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 60%;
+  background: #00C17A;
+  border-radius: 3px 0 0 3px;
+  animation: sidebar-indicator-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes sidebar-indicator-in {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    height: 60%;
+    opacity: 1;
+  }
+}
+
+/* Card stagger animation */
+.card-stagger {
+  opacity: 0;
+  animation: card-stagger-in 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes card-stagger-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Subtle card hover lift */
+.card-hover-lift {
+  transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 0.3s ease;
+}
+
+.card-hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Pulse ring for live indicators */
+.pulse-ring {
+  position: relative;
+}
+
+.pulse-ring::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  border: 2px solid currentColor;
+  opacity: 0;
+  animation: pulse-ring-anim 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes pulse-ring-anim {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1.15);
+    opacity: 0;
+  }
+}
+
+/* Number counter animation */
+.counter-animate {
+  animation: counter-pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes counter-pop {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Gradient text shimmer */
+.text-shimmer {
+  background: linear-gradient(
+    110deg,
+    hsl(var(--foreground)) 35%,
+    #00C17A 50%,
+    hsl(var(--foreground)) 65%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: text-shimmer 3s ease-in-out infinite;
+}
+
+@keyframes text-shimmer {
+  0%, 100% { background-position: 200% center; }
+  50% { background-position: 0% center; }
+}
+
+/* ── Space Hero animations ── */
+
+.space-star {
+  animation: space-twinkle 3s ease-in-out infinite alternate;
+}
+
+@keyframes space-twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.3); }
+}
+
+.space-orbit {
+  animation: space-orbit-rotate linear infinite;
+}
+
+@keyframes space-orbit-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Counter-rotate planet content so icons stay upright */
+.space-orbit > * {
+  animation: space-counter-rotate linear infinite;
+  animation-duration: inherit;
+}
+
+@keyframes space-counter-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+.space-planet-glow {
+  animation: space-planet-breathe 4s ease-in-out infinite alternate;
+}
+
+@keyframes space-planet-breathe {
+  0% { filter: brightness(0.9); }
+  100% { filter: brightness(1.2); }
+}
+
+.space-sun-pulse {
+  animation: space-sun-glow 3s ease-in-out infinite;
+}
+
+@keyframes space-sun-glow {
+  0%, 100% { transform: scale(1); opacity: 0.5; box-shadow: 0 0 20px rgba(0,193,122,0.2); }
+  50% { transform: scale(1.3); opacity: 0.8; box-shadow: 0 0 40px rgba(0,193,122,0.35); }
+}
+
+.space-nebula-drift {
+  animation: space-nebula-move 20s ease-in-out infinite alternate;
+}
+
+.space-nebula-drift-alt {
+  animation: space-nebula-move-alt 25s ease-in-out infinite alternate;
+}
+
+@keyframes space-nebula-move {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(20px, -15px) scale(1.15); }
+}
+
+@keyframes space-nebula-move-alt {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-15px, 10px) scale(1.1); }
+}
+
+.space-meteor {
+  animation: space-meteor-fly 24s linear infinite;
+  opacity: 0;
+}
+
+@keyframes space-meteor-fly {
+  0% { transform: translateX(0); opacity: 0; }
+  2% { opacity: 0.9; }
+  18% { opacity: 0.9; }
+  22% { transform: translateX(calc(100vw + 300px)); opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* Smooth scrollbar styling */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ── Drawer slide-in animation ── */
+@keyframes slide-in-left {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+.animate-slide-in-left {
+  animation: slide-in-left 0.25s ease-out;
+}
+
+/* ── Global smooth transitions for theme switching ── */
+* {
+  transition-property: background-color, border-color, color;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
+}
+
+/* Exclude animations from the blanket transition */
+[class*="animate-"], .recharts-wrapper *, .recharts-surface * {
+  transition-property: none;
+}
