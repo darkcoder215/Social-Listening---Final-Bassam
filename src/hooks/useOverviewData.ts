@@ -78,7 +78,8 @@ export function useOverviewData(dateFrom?: string, dateTo?: string) {
         .select("post_id, post_like_count, post_comment_count, post_share_count, post_play_count, post_create_time, post_description, post_url, account_username, account_name_ar");
       if (dateFrom) ttQ = ttQ.gte("post_create_time", dateFrom);
       if (dateTo) ttQ = ttQ.lte("post_create_time", dateTo);
-      const { data: ttPosts } = await ttQ;
+      const { data: ttPosts, error: ttErr } = await ttQ;
+      if (ttErr) console.error("[Overview] tiktok_posts error:", ttErr.message);
 
       // ── 2. Instagram posts (small table, fast) ──
       let igQ = (supabase as any)
@@ -86,7 +87,8 @@ export function useOverviewData(dateFrom?: string, dateTo?: string) {
         .select("post_id, post_likes_count, post_comments_count, post_views_count, post_timestamp, post_caption, post_url, account_username, account_name_ar");
       if (dateFrom) igQ = igQ.gte("post_timestamp", dateFrom);
       if (dateTo) igQ = igQ.lte("post_timestamp", dateTo);
-      const { data: igPosts } = await igQ;
+      const { data: igPosts, error: igErr } = await igQ;
+      if (igErr) console.error("[Overview] instagram_posts error:", igErr.message);
 
       // ── 3. YouTube comment count only (head:true = no data transfer) ──
       let ytQ = (supabase as any)
@@ -94,7 +96,8 @@ export function useOverviewData(dateFrom?: string, dateTo?: string) {
         .select("comment_id", { count: "exact", head: true });
       if (dateFrom) ytQ = ytQ.gte("comment_published_at", dateFrom);
       if (dateTo) ytQ = ytQ.lte("comment_published_at", dateTo);
-      const { count: ytCount } = await ytQ;
+      const { count: ytCount, error: ytErr } = await ytQ;
+      if (ytErr) console.error("[Overview] youtube_data error:", ytErr.message);
 
       // ── Calculate stats from fetched data ──
       const tiktok: PlatformStats = {
@@ -149,7 +152,8 @@ export function useOverviewData(dateFrom?: string, dateTo?: string) {
         .limit(5000);
       if (dateFrom) ytTlQ = ytTlQ.gte("comment_published_at", dateFrom);
       if (dateTo) ytTlQ = ytTlQ.lte("comment_published_at", dateTo);
-      const { data: ytRows } = await ytTlQ;
+      const { data: ytRows, error: ytTlErr } = await ytTlQ;
+      if (ytTlErr) console.error("[Overview] youtube timeline error:", ytTlErr.message);
       for (const r of ytRows || []) {
         const d = r.comment_published_at?.split("T")[0];
         if (d) ytTimeline[d] = (ytTimeline[d] || 0) + 1;

@@ -29,7 +29,7 @@ function makeRange(preset: DatePreset, from?: string, to?: string): DateRange {
 const DateRangeContext = createContext<DateRangeContextType | null>(null);
 
 export function DateRangeProvider({ children }: { children: ReactNode }) {
-  const [dateRange, setDateRange] = useState<DateRange>(() => makeRange("7d"));
+  const [dateRange, setDateRange] = useState<DateRange>(() => makeRange("90d"));
 
   const setPreset = useCallback((preset: DatePreset) => {
     setDateRange(makeRange(preset));

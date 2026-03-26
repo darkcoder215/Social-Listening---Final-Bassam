@@ -126,13 +126,18 @@ export default function SplashIntro({ onComplete }: SplashIntroProps) {
 
   useEffect(() => {
     const timers = [
-      setTimeout(() => setPhase("orbit"), 600),
-      setTimeout(() => setPhase("text"), 1800),
-      setTimeout(() => setPhase("exit"), 3600),
-      setTimeout(() => onComplete(), 4400),
+      setTimeout(() => setPhase("orbit"), 1000),
+      setTimeout(() => setPhase("text"), 3000),
+      setTimeout(() => setPhase("exit"), 6000),
+      setTimeout(() => onComplete(), 7000),
     ];
     return () => timers.forEach(clearTimeout);
   }, [onComplete]);
+
+  const handleSkip = () => {
+    setPhase("exit");
+    setTimeout(() => onComplete(), 700);
+  };
 
   return (
     <div
@@ -141,6 +146,14 @@ export default function SplashIntro({ onComplete }: SplashIntroProps) {
       }`}
       style={{ background: "radial-gradient(ellipse at 50% 50%, #0a0a14 0%, #050508 50%, #020204 100%)" }}
     >
+      {/* ── Skip button ── */}
+      <button
+        onClick={handleSkip}
+        className="absolute top-6 left-6 z-10 flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/[0.06] border border-white/[0.08] text-white/40 text-[12px] font-bold hover:text-white/70 hover:bg-white/[0.1] transition-all"
+      >
+        تخطي
+      </button>
+
       {/* ── Star field ── */}
       <div className="absolute inset-0 overflow-hidden">
         {stars.map((s, i) => (

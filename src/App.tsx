@@ -37,6 +37,8 @@ const App = () => {
     setShowOnboarding(false);
   }, []);
 
+  const introComplete = !showSplash && !showOnboarding;
+
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem storageKey="thmanyah-theme">
     <QueryClientProvider client={queryClient}>
@@ -45,25 +47,27 @@ const App = () => {
         <Sonner />
         {showSplash && <SplashIntro onComplete={handleSplashComplete} />}
         {!showSplash && showOnboarding && <Onboarding onComplete={handleOnboardingComplete} />}
-        <BrowserRouter>
-          <Routes>
-            {/* Home — no sidebar */}
-            <Route path="/" element={<Home />} />
+        {introComplete && (
+          <BrowserRouter>
+            <Routes>
+              {/* Home — no sidebar */}
+              <Route path="/" element={<Home />} />
 
-            {/* All section pages — with sidebar */}
-            <Route element={<AppLayout />}>
-              <Route path="/explore" element={<Overview />} />
-              <Route path="/explore/tiktok" element={<TikTokPage />} />
-              <Route path="/explore/instagram" element={<InstagramPage />} />
-              <Route path="/explore/youtube" element={<YouTubePage />} />
-              <Route path="/explore/x" element={<XPage />} />
-              <Route path="/reports" element={<MeltwaterReport />} />
-              <Route path="/settings" element={<Settings />} />
-            </Route>
+              {/* All section pages — with sidebar */}
+              <Route element={<AppLayout />}>
+                <Route path="/explore" element={<Overview />} />
+                <Route path="/explore/tiktok" element={<TikTokPage />} />
+                <Route path="/explore/instagram" element={<InstagramPage />} />
+                <Route path="/explore/youtube" element={<YouTubePage />} />
+                <Route path="/explore/x" element={<XPage />} />
+                <Route path="/reports" element={<MeltwaterReport />} />
+                <Route path="/settings" element={<Settings />} />
+              </Route>
 
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        )}
       </TooltipProvider>
     </QueryClientProvider>
     </ThemeProvider>
