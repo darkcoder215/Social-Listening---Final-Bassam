@@ -1,0 +1,102 @@
+==================================================
+PHASE 5 — TIKTOK DASHBOARDS
+==================================================
+Goal: Reaction-first TikTok insights.
+
+Tasks:
+- TikTok main page dashboard:
+  - Global metrics
+  - Sentiment & reaction charts
+  - Video-level insights (with thumbnails)
+  - Time-based trends
+- Create sub-pages per TikTok account with:
+  - Account-specific metrics
+  - Best videos
+  - Audience reaction patterns
+
+Rules:
+- High chart density is acceptable.
+- Charts must be clean and readable.
+- No video content analysis — text-based only.
+
+==================================================
+PHASE 6 — AI ANALYSIS (BOTH PLATFORMS)
+==================================================
+Goal: Unified AI foundation, different prompts.
+
+Tasks:
+- Keep async AI analysis.
+- One record = one analysis unit.
+- Status per record:
+  Pending / Analyzing / Done / Failed
+
+Rules:
+- Text cleaning + context resolution happens in APP, not model.
+- X:
+  - Normalize twitter.com / x.com
+  - Match replies/quotes by numeric status ID
+  - Attach original tweet text when available
+- TikTok:
+  - Analyze comment text only
+
+All prompts + outputs:
+- Arabic only
+- Stored in editable config files
+
+==================================================
+PHASE 7 — INTERACTION MODEL
+==================================================
+Goal: Deep interactivity, no navigation jumps.
+
+Tasks:
+- Make ALL charts clickable.
+- Clicking opens right-side insight panel with:
+  - Filtered records
+  - Count
+  - Sorting
+  - Clear filters
+  - Export
+
+Support:
+- Multi-filter (AND logic)
+- Date + time range filtering
+
+==================================================
+PHASE 8 — TIME GRANULARITY
+==================================================
+Tasks:
+- Date filters must include hour + minute.
+- Trend logic:
+  - <= 24h → hourly
+  - Cross-midnight within 24h → show day separator
+  - > 24h → daily (or adaptive)
+
+==================================================
+PHASE 9 — DESIGN & THEME
+==================================================
+Goal: Professional, readable, branded UI.
+
+Tasks:
+- Apply new theme:
+  - Dark: Black + Green
+  - Light: White + Green
+- Ensure all charts work in both modes.
+- Fix Arabic typography spacing and RTL issues.
+- Sentiment section:
+  - Donut + Trend in same container.
+
+==================================================
+PHASE 10 — BUG FIXES & POLISH
+==================================================
+Tasks:
+- Fix @@username bug → always single @
+- Ensure no broken links or filters.
+- Ensure app remains stable and performant.
+
+==================================================
+FINAL RULES
+==================================================
+- Do NOT skip phases.
+- Do NOT assume missing requirements.
+- If something is unclear, preserve existing behavior.
+- The goal is a scalable insight platform, not a raw monitoring tool.
