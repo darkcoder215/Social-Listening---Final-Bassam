@@ -2,7 +2,7 @@
  * AI Analysis service — analyzes social media comments
  * across all platforms using AI.
  */
-import { loadSelectedModel } from "@/lib/settings";
+import { loadSelectedModel, loadMetrics, buildMetricsPromptSection } from "@/lib/settings";
 
 const AI_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 const AI_API_KEY = "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";
@@ -91,6 +91,21 @@ export interface CommentInput {
   date?: string;
 }
 
+/* ── Sample Data (fallback when no Supabase data) ── */
+
+export const SAMPLE_COMMENTS: CommentInput[] = [
+  { text: "بودكاست ثمانية من أفضل البودكاستات العربية، محتوى راقي ومفيد جداً 👏", platform: "tiktok", author: "أحمد", date: "2025-03-15" },
+  { text: "الحلقة الأخيرة مع الضيف كانت مملة صراحة، ما استفدت شي", platform: "youtube", author: "سارة", date: "2025-03-14" },
+  { text: "ليه ما تسوون حلقات أكثر عن التقنية؟ المحتوى التقني ناقص عندكم", platform: "x", author: "فهد", date: "2025-03-13" },
+  { text: "شكراً ثمانية على المحتوى الجميل، كل حلقة أحسن من اللي قبلها ❤️", platform: "instagram", author: "نورة", date: "2025-03-12" },
+  { text: "أتمنى تحسنون جودة الصوت في البودكاست، أحياناً ما يكون واضح", platform: "youtube", author: "خالد", date: "2025-03-11" },
+  { text: "فنجان أفضل بودكاست عربي بدون منافس! كل حلقة تفتح آفاق جديدة 🔥", platform: "tiktok", author: "ريم", date: "2025-03-10" },
+  { text: "سؤال: ليه توقفتوا عن نشر المقاطع القصيرة؟ كانت ممتازة", platform: "instagram", author: "عبدالله", date: "2025-03-09" },
+  { text: "المحتوى صار تجاري أكثر من اللازم، وين المحتوى الأصلي؟ 😒", platform: "x", author: "لينا", date: "2025-03-08" },
+  { text: "حلقة اليوم عن ريادة الأعمال كانت ملهمة جداً، شكراً عبدالرحمن 🙏", platform: "youtube", author: "محمد", date: "2025-03-07" },
+  { text: "أسلوب التقديم ممتاز والإنتاج عالي الجودة، استمروا على هالمستوى", platform: "tiktok", author: "هند", date: "2025-03-06" },
+];
+
 /* ── Phase 1: Sentiment Analysis (batched) ── */
 
 const BATCH_SIZE = 15;
@@ -121,11 +136,7 @@ async function analyzeBatch(
 
 لكل تعليق أرجع:
 - index: رقم التعليق (يبدأ من 1)
-- sentiment: "positive" أو "negative" أو "neutral"
-- confidence: رقم من 0 إلى 1
-- emotion: أحد هذه: "فرح", "غضب", "حزن", "مفاجأة", "محايد", "حماس", "إحباط", "قلق", "سخرية"
-- keywords: مصفوفة 2-4 كلمات مفتاحية مستخلصة
-- reason: شرح مختصر بالعربية لسبب التصنيف
+${buildMetricsPromptSection(loadMetrics())}
 
 أجب بصيغة JSON فقط: {"results":[...]}`,
         },

@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Brain,
   TrendingUp,
@@ -16,6 +17,7 @@ import {
   Hash,
   Sparkles,
   RefreshCw,
+  Settings,
 } from "lucide-react";
 import { useDateRange } from "@/contexts/DateRangeContext";
 import DateRangeFilter from "@/components/explore/DateRangeFilter";
@@ -23,6 +25,7 @@ import PageExplainer from "@/components/PageExplainer";
 import { useAllPlatformComments } from "@/hooks/useAiAnalysisData";
 import {
   runFullAnalysis,
+  SAMPLE_COMMENTS,
   type AnalysisResult,
   type AnalysisProgress,
   type AiReportTheme,
@@ -121,12 +124,17 @@ function KpiCard({ label, value, color, sub }: { label: string; value: string | 
 
 /* ── Main Page ── */
 export default function AiAnalyses() {
+  const navigate = useNavigate();
   const { dateRange } = useDateRange();
-  const { data: comments, isLoading: commentsLoading } = useAllPlatformComments({
+  const { data: supabaseComments, isLoading: commentsLoading } = useAllPlatformComments({
     dateFrom: dateRange.from,
     dateTo: dateRange.to,
     limit: 300,
   });
+
+  // Use Supabase data if available, otherwise fall back to sample data
+  const comments = supabaseComments && supabaseComments.length > 0 ? supabaseComments : SAMPLE_COMMENTS;
+  const usingSampleData = !supabaseComments || supabaseComments.length === 0;
 
   const [activeSection, setActiveSection] = useState<string>("overview");
   const [result, setResult] = useState<AnalysisResult | null>(null);
@@ -138,7 +146,7 @@ export default function AiAnalyses() {
   const currentModel = AI_MODELS.find((m) => m.id === loadSelectedModel());
 
   const handleRunAnalysis = useCallback(async () => {
-    if (!comments || comments.length === 0) return;
+    if (comments.length === 0) return;
     setResult(null);
     setFilterSentiment(null);
     try {
@@ -208,10 +216,20 @@ export default function AiAnalyses() {
           </div>
         )}
 
+        {/* Settings link */}
+        <button
+          onClick={() => navigate("/settings?tab=ai")}
+          className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/30 border border-border/50 hover:border-border hover:bg-muted/50 transition-all"
+          title="إعدادات معايير التحليل"
+        >
+          <Settings className="w-3.5 h-3.5 text-muted-foreground" />
+          <span className="text-[11px] font-bold text-muted-foreground">معايير التحليل</span>
+        </button>
+
         {/* Run button */}
         <button
           onClick={handleRunAnalysis}
-          disabled={isRunning || commentsLoading || !comments?.length}
+          disabled={isRunning || commentsLoading}
           className={cn(
             "flex items-center gap-2 px-5 py-2.5 rounded-xl text-[13px] font-bold transition-all",
             isRunning
@@ -243,6 +261,16 @@ export default function AiAnalyses() {
               style={{ width: `${progress.percent}%` }}
             />
           </div>
+        </div>
+      )}
+
+      {/* Sample data notice */}
+      {usingSampleData && !commentsLoading && (
+        <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 flex items-center gap-3">
+          <Sparkles className="w-5 h-5 text-amber-500 flex-shrink-0" />
+          <p className="text-[13px] font-bold text-amber-600 dark:text-amber-400">
+            يتم استخدام بيانات تجريبية ({SAMPLE_COMMENTS.length} تعليق). اربط Supabase لتحليل بيانات حقيقية.
+          </p>
         </div>
       )}
 

@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   Settings as SettingsIcon,
   Upload,
@@ -60,7 +61,9 @@ const TABS: { id: ActiveTab; label: string; icon: React.ElementType; color: stri
 ];
 
 export default function Settings() {
-  const [activeTab, setActiveTab] = useState<ActiveTab>("import");
+  const [searchParams] = useSearchParams();
+  const initialTab = (searchParams.get("tab") as ActiveTab) || "import";
+  const [activeTab, setActiveTab] = useState<ActiveTab>(initialTab);
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
