@@ -31,7 +31,7 @@ import {
   type AiReportRecommendation,
   type AnalyzedItem,
 } from "@/lib/ai-analysis";
-import { loadApiKeys, AI_MODELS, loadSelectedModel } from "@/lib/settings";
+import { AI_MODELS, loadSelectedModel } from "@/lib/settings";
 import { PLATFORM_COLORS, PLATFORM_LABELS, fmtNum, type Platform } from "@/lib/db-types";
 import { PLATFORM_ICON_MAP } from "@/components/icons/PlatformIcons";
 import { cn } from "@/lib/utils";
@@ -135,7 +135,6 @@ export default function AiAnalyses() {
 
   const isRunning = progress.phase === "analyzing" || progress.phase === "generating-report" || progress.phase === "fetching";
   const hasResult = !!result;
-  const hasApiKey = loadApiKeys().openrouter.trim().length > 0;
   const currentModel = AI_MODELS.find((m) => m.id === loadSelectedModel());
 
   const handleRunAnalysis = useCallback(async () => {
@@ -212,13 +211,11 @@ export default function AiAnalyses() {
         {/* Run button */}
         <button
           onClick={handleRunAnalysis}
-          disabled={isRunning || commentsLoading || !hasApiKey || !comments?.length}
+          disabled={isRunning || commentsLoading || !comments?.length}
           className={cn(
             "flex items-center gap-2 px-5 py-2.5 rounded-xl text-[13px] font-bold transition-all",
             isRunning
               ? "bg-muted/20 text-muted-foreground cursor-wait"
-              : !hasApiKey
-              ? "bg-muted/10 text-muted-foreground/40 cursor-not-allowed"
               : "bg-[#8B5CF6] text-white hover:brightness-110"
           )}
         >
@@ -232,17 +229,6 @@ export default function AiAnalyses() {
           {isRunning ? "جاري التحليل..." : hasResult ? "إعادة التحليل" : "بدء التحليل"}
         </button>
       </div>
-
-      {/* API Key Warning */}
-      {!hasApiKey && (
-        <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 flex items-center gap-3">
-          <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0" />
-          <p className="text-[13px] font-bold text-amber-600 dark:text-amber-400">
-            مفتاح OpenRouter غير مُعد. أضف المفتاح في{" "}
-            <a href="/settings" className="underline">صفحة الإعدادات</a> لتفعيل التحليل.
-          </p>
-        </div>
-      )}
 
       {/* Progress Bar */}
       {isRunning && (
@@ -288,9 +274,7 @@ export default function AiAnalyses() {
               );
             })}
           </div>
-          {hasApiKey && (
-            <p className="text-[12px] text-muted-foreground/50">اضغط "بدء التحليل" لتحليل هذه التعليقات بالذكاء الاصطناعي</p>
-          )}
+          <p className="text-[12px] text-muted-foreground/50">اضغط "بدء التحليل" لتحليل هذه التعليقات بالذكاء الاصطناعي</p>
         </div>
       )}
 

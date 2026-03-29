@@ -1,10 +1,11 @@
 /**
- * AI Analysis service — calls OpenRouter with Gemini to analyze
- * social media comments across all platforms.
+ * AI Analysis service — analyzes social media comments
+ * across all platforms using AI.
  */
-import { loadApiKeys, loadSelectedModel } from "@/lib/settings";
+import { loadSelectedModel } from "@/lib/settings";
 
-const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
+const AI_API_URL = "https://openrouter.ai/api/v1/chat/completions";
+const AI_API_KEY = "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";
 
 /* ── Types ── */
 
@@ -103,7 +104,7 @@ async function analyzeBatch(
     .map((c, i) => `[${i + 1}] (${c.platform}) ${c.text}`)
     .join("\n");
 
-  const res = await fetch(OPENROUTER_URL, {
+  const res = await fetch(AI_API_URL, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,
@@ -137,7 +138,7 @@ async function analyzeBatch(
 
   if (!res.ok) {
     const errText = await res.text().catch(() => "");
-    throw new Error(`OpenRouter API error ${res.status}: ${errText}`);
+    throw new Error(`AI API error ${res.status}: ${errText}`);
   }
 
   const data = await res.json();
@@ -234,7 +235,7 @@ ${sampleNeg.map((t, i) => `${i + 1}. ${t}`).join("\n")}
 3-5 لكل قسم. بالعربية. ركز على رؤى قابلة للتنفيذ وتوصيات عملية للفريق.
 أجب بصيغة JSON فقط.`;
 
-  const res = await fetch(OPENROUTER_URL, {
+  const res = await fetch(AI_API_URL, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,
@@ -281,11 +282,7 @@ export async function runFullAnalysis(
   comments: CommentInput[],
   onProgress: ProgressCallback,
 ): Promise<AnalysisResult> {
-  const keys = loadApiKeys();
-  if (!keys.openrouter) {
-    throw new Error("مفتاح OpenRouter غير موجود. أضف المفتاح في صفحة الإعدادات.");
-  }
-
+  const apiKey = AI_API_KEY;
   const modelId = loadSelectedModel();
 
   // Phase 1: Batch sentiment analysis
@@ -302,7 +299,7 @@ export async function runFullAnalysis(
   for (let i = 0; i < batches.length; i += PARALLEL) {
     const chunk = batches.slice(i, i + PARALLEL);
     const results = await Promise.allSettled(
-      chunk.map((batch) => analyzeBatch(batch, keys.openrouter, modelId)),
+      chunk.map((batch) => analyzeBatch(batch, apiKey, modelId)),
     );
 
     for (const r of results) {
@@ -324,7 +321,7 @@ export async function runFullAnalysis(
 
   // Phase 2: Generate report
   onProgress({ phase: "generating-report", percent: 75, message: "جاري إنشاء التقرير الشامل..." });
-  const report = await generateReport(allItems, keys.openrouter, modelId);
+  const report = await generateReport(allItems, apiKey, modelId);
 
   // Aggregate stats
   const sentimentCounts: Record<string, number> = {};
