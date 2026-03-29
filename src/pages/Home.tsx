@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Compass, FileBarChart, Settings, ArrowLeft } from "lucide-react";
+import { Compass, Brain, FileBarChart, Settings, ArrowLeft } from "lucide-react";
 import SpaceHero from "@/components/SpaceHero";
 
 const SECTIONS = [
@@ -12,12 +12,20 @@ const SECTIONS = [
     bgClass: "from-[#00C17A]/[0.06] to-[#00C17A]/[0.02]",
   },
   {
+    labelAr: "التحليل الذكي",
+    description: "تحليل شامل بالذكاء الاصطناعي للمشاعر والمواضيع والتوصيات",
+    icon: Brain,
+    path: "/ai-analyses",
+    color: "#8B5CF6",
+    bgClass: "from-purple-500/[0.06] to-purple-500/[0.02]",
+  },
+  {
     labelAr: "التقارير",
     description: "عرض وتحليل تقارير الرصد الاجتماعي من Meltwater",
     icon: FileBarChart,
     path: "/reports",
-    color: "#8B5CF6",
-    bgClass: "from-purple-500/[0.06] to-purple-500/[0.02]",
+    color: "#ff0050",
+    bgClass: "from-[#ff0050]/[0.06] to-[#ff0050]/[0.02]",
   },
   {
     labelAr: "الإعدادات",
@@ -53,7 +61,7 @@ export default function Home() {
         <SpaceHero />
 
         {/* Section Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {SECTIONS.map((section, i) => {
             const Icon = section.icon;
             return (

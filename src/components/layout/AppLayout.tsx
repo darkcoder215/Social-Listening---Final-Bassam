@@ -45,6 +45,7 @@ function PageTitle() {
     "/explore/instagram": "Instagram",
     "/explore/youtube": "YouTube",
     "/explore/x": "X",
+    "/ai-analyses": "التحليل الذكي",
     "/reports": "التقارير",
     "/settings": "الإعدادات",
   };

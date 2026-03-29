@@ -15,6 +15,7 @@ import InstagramPage from "./pages/explore/InstagramPage";
 import YouTubePage from "./pages/explore/YouTubePage";
 import XPage from "./pages/explore/XPage";
 import MeltwaterReport from "./pages/MeltwaterReport";
+import AiAnalyses from "./pages/AiAnalyses";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
@@ -60,6 +61,7 @@ const App = () => {
                 <Route path="/explore/instagram" element={<InstagramPage />} />
                 <Route path="/explore/youtube" element={<YouTubePage />} />
                 <Route path="/explore/x" element={<XPage />} />
+                <Route path="/ai-analyses" element={<AiAnalyses />} />
                 <Route path="/reports" element={<MeltwaterReport />} />
                 <Route path="/settings" element={<Settings />} />
               </Route>

@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   Compass,
   FileBarChart,
+  Brain,
   Settings,
   ChevronDown,
   Home,
@@ -31,6 +32,11 @@ const NAV_ITEMS: NavItem[] = [
       { labelAr: "YouTube", path: "/explore/youtube", icon: YouTubeIcon },
       { labelAr: "X", path: "/explore/x", icon: XIcon },
     ],
+  },
+  {
+    labelAr: "التحليل الذكي",
+    icon: Brain,
+    path: "/ai-analyses",
   },
   {
     labelAr: "التقارير",
