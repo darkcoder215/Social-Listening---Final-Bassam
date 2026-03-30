@@ -26,6 +26,7 @@ import { useAllPlatformComments } from "@/hooks/useAiAnalysisData";
 import {
   runFullAnalysis,
   SAMPLE_COMMENTS,
+  SAMPLE_ANALYSIS_RESULT,
   type AnalysisResult,
   type AnalysisProgress,
   type AiReportTheme,
@@ -137,7 +138,8 @@ export default function AiAnalyses() {
   const usingSampleData = !supabaseComments || supabaseComments.length === 0;
 
   const [activeSection, setActiveSection] = useState<string>("overview");
-  const [result, setResult] = useState<AnalysisResult | null>(null);
+  // Auto-load sample results when using sample data
+  const [result, setResult] = useState<AnalysisResult | null>(usingSampleData ? SAMPLE_ANALYSIS_RESULT : null);
   const [progress, setProgress] = useState<AnalysisProgress>({ phase: "idle", percent: 0, message: "" });
   const [filterSentiment, setFilterSentiment] = useState<string | null>(null);
 
