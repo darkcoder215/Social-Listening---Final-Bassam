@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Brain,
@@ -138,14 +138,21 @@ export default function AiAnalyses() {
   const usingSampleData = !supabaseComments || supabaseComments.length === 0;
 
   const [activeSection, setActiveSection] = useState<string>("overview");
-  // Auto-load sample results when using sample data
-  const [result, setResult] = useState<AnalysisResult | null>(usingSampleData ? SAMPLE_ANALYSIS_RESULT : null);
+  const [result, setResult] = useState<AnalysisResult | null>(null);
   const [progress, setProgress] = useState<AnalysisProgress>({ phase: "idle", percent: 0, message: "" });
   const [filterSentiment, setFilterSentiment] = useState<string | null>(null);
+  const [filterPlatform, setFilterPlatform] = useState<string | null>(null);
 
   const isRunning = progress.phase === "analyzing" || progress.phase === "generating-report" || progress.phase === "fetching";
   const hasResult = !!result;
   const currentModel = AI_MODELS.find((m) => m.id === loadSelectedModel());
+
+  // Auto-load sample results when using sample data
+  useEffect(() => {
+    if (usingSampleData && !result && !isRunning) {
+      setResult(SAMPLE_ANALYSIS_RESULT);
+    }
+  }, [usingSampleData, result, isRunning]);
 
   const handleRunAnalysis = useCallback(async () => {
     if (comments.length === 0) return;
@@ -203,9 +210,11 @@ export default function AiAnalyses() {
 
   const filteredComments = useMemo(() => {
     if (!result) return [];
-    if (!filterSentiment) return result.items;
-    return result.items.filter((i) => i.sentiment === filterSentiment);
-  }, [result, filterSentiment]);
+    let items = result.items;
+    if (filterPlatform) items = items.filter((i) => i.platform === filterPlatform);
+    if (filterSentiment) items = items.filter((i) => i.sentiment === filterSentiment);
+    return items;
+  }, [result, filterSentiment, filterPlatform]);
 
   return (
     <div className="space-y-6">
@@ -643,7 +652,42 @@ export default function AiAnalyses() {
             <section className="space-y-6">
               <SectionHeading icon={MessageSquare} title="التعليقات المحللة" color="#0072F9" />
 
-              {/* Filter pills */}
+              {/* Platform filter tabs */}
+              <div className="flex items-center gap-2 flex-wrap">
+                <button
+                  onClick={() => setFilterPlatform(null)}
+                  className={cn(
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-bold border transition-all",
+                    !filterPlatform ? "bg-[#0072F9]/10 border-[#0072F9]/30 text-[#0072F9]" : "border-border/50 text-muted-foreground hover:bg-muted/20"
+                  )}
+                >
+                  جميع المنصات ({result.items.length})
+                </button>
+                {(["tiktok", "instagram", "youtube", "x"] as const).map((p) => {
+                  const count = result.items.filter((item) => item.platform === p).length;
+                  if (count === 0) return null;
+                  const Icon = PLATFORM_ICON_MAP[p];
+                  const color = PLATFORM_COLORS[p as Platform] || "#8B5CF6";
+                  return (
+                    <button
+                      key={p}
+                      onClick={() => setFilterPlatform((prev) => (prev === p ? null : p))}
+                      className={cn(
+                        "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-bold border transition-all",
+                        filterPlatform === p
+                          ? "border-current"
+                          : "border-border/50 text-muted-foreground hover:bg-muted/20"
+                      )}
+                      style={filterPlatform === p ? { color, backgroundColor: `${color}10` } : undefined}
+                    >
+                      {Icon && <Icon className="w-3.5 h-3.5" />}
+                      {PLATFORM_LABELS[p as Platform] || p} ({count})
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Sentiment filter pills */}
               <div className="flex items-center gap-2 flex-wrap">
                 <button
                   onClick={() => setFilterSentiment(null)}
@@ -652,7 +696,7 @@ export default function AiAnalyses() {
                     !filterSentiment ? "bg-[#8B5CF6]/10 border-[#8B5CF6]/30 text-[#8B5CF6]" : "border-border/50 text-muted-foreground hover:bg-muted/20"
                   )}
                 >
-                  الكل ({result.items.length})
+                  كل المشاعر
                 </button>
                 {Object.entries(result.sentimentCounts).map(([key, count]) => (
                   <button
@@ -671,14 +715,21 @@ export default function AiAnalyses() {
                 ))}
               </div>
 
+              {/* Filtered count */}
+              <p className="text-[12px] font-bold text-muted-foreground/50">
+                عرض {filteredComments.length} تعليق
+                {filterPlatform && <> من {PLATFORM_LABELS[filterPlatform as Platform] || filterPlatform}</>}
+                {filterSentiment && <> — {SENTIMENT_LABELS[filterSentiment] || filterSentiment}</>}
+              </p>
+
               {/* Comment list */}
               <div className="space-y-3">
-                {filteredComments.slice(0, 50).map((item, i) => (
+                {filteredComments.slice(0, 80).map((item, i) => (
                   <CommentCard key={i} item={item} />
                 ))}
-                {filteredComments.length > 50 && (
+                {filteredComments.length > 80 && (
                   <p className="text-center text-muted-foreground/50 text-[12px] font-bold py-4">
-                    عرض 50 من {filteredComments.length} تعليق
+                    عرض 80 من {filteredComments.length} تعليق
                   </p>
                 )}
               </div>
