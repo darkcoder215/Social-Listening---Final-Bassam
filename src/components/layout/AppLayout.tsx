@@ -35,11 +35,11 @@ export default function AppLayout() {
           </div>
         </main>
 
-        {/* Floating AI Analysis button — left side (appears on left in RTL) */}
+        {/* Floating AI Analysis button — right side of screen */}
         {showAiFab && (
           <button
             onClick={() => navigate("/ai-analyses")}
-            className="fixed left-6 bottom-6 z-50 flex items-center gap-2 px-4 py-3 rounded-2xl bg-[#8B5CF6] text-white shadow-lg shadow-[#8B5CF6]/25 hover:brightness-110 hover:scale-105 transition-all duration-200 group"
+            className="fixed right-6 bottom-6 z-50 flex items-center gap-2 px-4 py-3 rounded-2xl bg-[#8B5CF6] text-white shadow-lg shadow-[#8B5CF6]/25 hover:brightness-110 hover:scale-105 transition-all duration-200 group"
             title="التحليل الذكي"
           >
             <Brain className="w-5 h-5" strokeWidth={1.8} />
@@ -61,8 +61,8 @@ function PageTitle() {
     "/explore/instagram": "Instagram",
     "/explore/youtube": "YouTube",
     "/explore/x": "X",
-    "/ai-analyses": "التحليل الذكي",
-    "/reports": "التقارير",
+    "/ai-analyses": "التحليل الذكي — AI",
+    "/reports": "تقارير Meltwater",
     "/settings": "الإعدادات",
   };
 

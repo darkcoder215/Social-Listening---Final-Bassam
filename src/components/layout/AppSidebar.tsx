@@ -8,47 +8,12 @@ import {
   Home,
   PanelLeftClose,
   PanelLeftOpen,
+  Sparkles,
 } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { TikTokIcon, InstagramIcon, YouTubeIcon, XIcon } from "@/components/icons/PlatformIcons";
-
-interface NavItem {
-  labelAr: string;
-  icon: React.ElementType;
-  path?: string;
-  children?: { labelAr: string; path: string; icon?: React.ElementType }[];
-}
-
-const NAV_ITEMS: NavItem[] = [
-  {
-    labelAr: "استكشاف البيانات",
-    icon: Compass,
-    children: [
-      { labelAr: "نظرة عامة", path: "/explore", icon: Compass },
-      { labelAr: "TikTok", path: "/explore/tiktok", icon: TikTokIcon },
-      { labelAr: "Instagram", path: "/explore/instagram", icon: InstagramIcon },
-      { labelAr: "YouTube", path: "/explore/youtube", icon: YouTubeIcon },
-      { labelAr: "X", path: "/explore/x", icon: XIcon },
-    ],
-  },
-  {
-    labelAr: "التحليل الذكي",
-    icon: Brain,
-    path: "/ai-analyses",
-  },
-  {
-    labelAr: "التقارير",
-    icon: FileBarChart,
-    path: "/reports",
-  },
-  {
-    labelAr: "الإعدادات",
-    icon: Settings,
-    path: "/settings",
-  },
-];
 
 interface SidebarProps {
   collapsed: boolean;
@@ -72,11 +37,14 @@ export default function AppSidebar({ collapsed, onToggle }: SidebarProps) {
     return location.pathname.startsWith(path);
   };
 
-  const isParentActive = (item: NavItem) => {
-    if (item.path && isActive(item.path)) return true;
-    return item.children?.some((child) => isActive(child.path)) ?? false;
-  };
+  const aiActive = isActive("/ai-analyses");
+  const reportsActive = isActive("/reports");
+  const settingsActive = isActive("/settings");
+  const exploreActive = ["/explore", "/explore/tiktok", "/explore/instagram", "/explore/youtube", "/explore/x"].some(
+    (p) => isActive(p)
+  );
 
+  /* ── Collapsed sidebar ── */
   if (collapsed) {
     return (
       <aside className="w-[52px] min-h-screen bg-sidebar flex flex-col items-center py-4 border-l border-sidebar-border">
@@ -84,40 +52,49 @@ export default function AppSidebar({ collapsed, onToggle }: SidebarProps) {
           <PanelLeftOpen className="w-4 h-4 text-sidebar-muted" />
         </button>
         <div className="flex-1 flex flex-col items-center gap-2 pt-2">
-          {NAV_ITEMS.map((item) => {
-            const Icon = item.icon;
-            const active = isParentActive(item);
-            return (
-              <button
-                key={item.labelAr}
-                onClick={() => {
-                  if (item.path) navigate(item.path);
-                  else if (item.children) navigate(item.children[0].path);
-                }}
-                className={cn(
-                  "p-2.5 rounded-xl transition-colors",
-                  active ? "bg-thmanyah-green/10" : "hover:bg-sidebar-accent"
-                )}
-                title={item.labelAr}
-              >
-                <Icon className={cn("w-[18px] h-[18px]", active ? "text-thmanyah-green" : "text-sidebar-muted")} />
-              </button>
-            );
-          })}
+          <button
+            onClick={() => navigate("/explore")}
+            className={cn("p-2.5 rounded-xl transition-colors", exploreActive ? "bg-thmanyah-green/10" : "hover:bg-sidebar-accent")}
+            title="استكشاف البيانات"
+          >
+            <Compass className={cn("w-[18px] h-[18px]", exploreActive ? "text-thmanyah-green" : "text-sidebar-muted")} />
+          </button>
+
+          {/* AI Analysis — distinct purple icon */}
+          <button
+            onClick={() => navigate("/ai-analyses")}
+            className={cn("p-2.5 rounded-xl transition-colors", aiActive ? "bg-[#8B5CF6]/15" : "hover:bg-sidebar-accent")}
+            title="التحليل الذكي"
+          >
+            <Brain className={cn("w-[18px] h-[18px]", aiActive ? "text-[#8B5CF6]" : "text-sidebar-muted")} />
+          </button>
+
+          <button
+            onClick={() => navigate("/reports")}
+            className={cn("p-2.5 rounded-xl transition-colors", reportsActive ? "bg-[#ff0050]/10" : "hover:bg-sidebar-accent")}
+            title="تقارير Meltwater"
+          >
+            <FileBarChart className={cn("w-[18px] h-[18px]", reportsActive ? "text-[#ff0050]" : "text-sidebar-muted")} />
+          </button>
+
+          <button
+            onClick={() => navigate("/settings")}
+            className={cn("p-2.5 rounded-xl transition-colors", settingsActive ? "bg-thmanyah-green/10" : "hover:bg-sidebar-accent")}
+            title="الإعدادات"
+          >
+            <Settings className={cn("w-[18px] h-[18px]", settingsActive ? "text-thmanyah-green" : "text-sidebar-muted")} />
+          </button>
         </div>
       </aside>
     );
   }
 
+  /* ── Expanded sidebar ── */
   return (
     <aside className="w-[260px] min-h-screen bg-sidebar text-sidebar-foreground flex flex-col border-l border-sidebar-border custom-scrollbar">
       {/* Header */}
       <div className="p-5 pb-3 flex items-center gap-3">
-        <button
-          onClick={() => navigate("/")}
-          className="relative group"
-          title="الرئيسية"
-        >
+        <button onClick={() => navigate("/")} className="relative group" title="الرئيسية">
           <div className="absolute inset-0 bg-thmanyah-green/15 rounded-xl blur-md" />
           <div className="relative w-10 h-10 bg-sidebar-accent rounded-xl border border-sidebar-border flex items-center justify-center group-hover:bg-sidebar-accent/80 transition-colors">
             <img src="/Usable/thamanyah.png" alt="ثمانية" className="w-6 h-6 dark:invert-0 invert" style={{ imageRendering: "-webkit-optimize-contrast" }} />
@@ -144,64 +121,111 @@ export default function AppSidebar({ collapsed, onToggle }: SidebarProps) {
       <div className="mx-4 h-px bg-sidebar-border mb-2" />
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto custom-scrollbar">
-        {NAV_ITEMS.map((item) => {
-          const Icon = item.icon;
-          const hasChildren = !!item.children?.length;
-          const isExpanded = expandedSections.includes(item.labelAr);
-          const active = isParentActive(item);
+      <nav className="flex-1 px-3 py-2 space-y-1 overflow-y-auto custom-scrollbar">
 
-          return (
-            <div key={item.labelAr}>
-              <button
-                onClick={() => {
-                  if (hasChildren) {
-                    toggleSection(item.labelAr);
-                  } else if (item.path) {
-                    navigate(item.path);
-                  }
-                }}
-                className={cn(
-                  "sidebar-nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-right relative group",
-                  active ? "bg-thmanyah-green/10 text-sidebar-foreground" : "text-sidebar-muted hover:text-sidebar-foreground/80 hover:bg-sidebar-accent"
-                )}
-              >
-                {active && !hasChildren && <span className="sidebar-active-indicator" />}
-                <Icon className={cn("w-[18px] h-[18px] flex-shrink-0", active ? "text-thmanyah-green" : "text-sidebar-muted group-hover:text-sidebar-foreground/60")} strokeWidth={1.8} />
-                <span className="flex-1 text-[13px] font-bold">{item.labelAr}</span>
-                {hasChildren && (
-                  <ChevronDown className={cn("w-3.5 h-3.5 text-sidebar-muted transition-transform duration-200", isExpanded && "rotate-180")} />
-                )}
-              </button>
+        {/* ── Section: Data Exploration ── */}
+        <p className="px-3 pt-2 pb-1 text-[10px] font-bold text-sidebar-muted/50 uppercase tracking-wider">البيانات</p>
 
-              {hasChildren && (
-                <div className={cn("overflow-hidden transition-all duration-300 ease-out", isExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0")}>
-                  <div className="mr-5 pr-3 border-r border-sidebar-border mt-0.5 mb-1 space-y-0.5">
-                    {item.children!.map((child) => {
-                      const ChildIcon = child.icon;
-                      const childActive = isActive(child.path);
-                      return (
-                        <button
-                          key={child.path}
-                          onClick={() => navigate(child.path)}
-                          className={cn(
-                            "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-right transition-all duration-200",
-                            childActive
-                              ? "bg-thmanyah-green/10 text-thmanyah-green"
-                              : "text-sidebar-muted hover:text-sidebar-foreground/70 hover:bg-sidebar-accent"
-                          )}
-                        >
-                          {ChildIcon && <ChildIcon className="w-4 h-4 flex-shrink-0" />}
-                          <span className="text-[12px] font-bold">{child.labelAr}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
+        <div>
+          <button
+            onClick={() => toggleSection("استكشاف البيانات")}
+            className={cn(
+              "sidebar-nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-right relative group",
+              exploreActive ? "bg-thmanyah-green/10 text-sidebar-foreground" : "text-sidebar-muted hover:text-sidebar-foreground/80 hover:bg-sidebar-accent"
+            )}
+          >
+            <Compass className={cn("w-[18px] h-[18px] flex-shrink-0", exploreActive ? "text-thmanyah-green" : "text-sidebar-muted group-hover:text-sidebar-foreground/60")} strokeWidth={1.8} />
+            <span className="flex-1 text-[13px] font-bold">استكشاف البيانات</span>
+            <ChevronDown className={cn("w-3.5 h-3.5 text-sidebar-muted transition-transform duration-200", expandedSections.includes("استكشاف البيانات") && "rotate-180")} />
+          </button>
+
+          <div className={cn("overflow-hidden transition-all duration-300 ease-out", expandedSections.includes("استكشاف البيانات") ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0")}>
+            <div className="mr-5 pr-3 border-r border-sidebar-border mt-0.5 mb-1 space-y-0.5">
+              {[
+                { labelAr: "نظرة عامة", path: "/explore", icon: Compass },
+                { labelAr: "TikTok", path: "/explore/tiktok", icon: TikTokIcon },
+                { labelAr: "Instagram", path: "/explore/instagram", icon: InstagramIcon },
+                { labelAr: "YouTube", path: "/explore/youtube", icon: YouTubeIcon },
+                { labelAr: "X", path: "/explore/x", icon: XIcon },
+              ].map((child) => {
+                const ChildIcon = child.icon;
+                const childActive = isActive(child.path);
+                return (
+                  <button
+                    key={child.path}
+                    onClick={() => navigate(child.path)}
+                    className={cn(
+                      "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-right transition-all duration-200",
+                      childActive
+                        ? "bg-thmanyah-green/10 text-thmanyah-green"
+                        : "text-sidebar-muted hover:text-sidebar-foreground/70 hover:bg-sidebar-accent"
+                    )}
+                  >
+                    {ChildIcon && <ChildIcon className="w-4 h-4 flex-shrink-0" />}
+                    <span className="text-[12px] font-bold">{child.labelAr}</span>
+                  </button>
+                );
+              })}
             </div>
-          );
-        })}
+          </div>
+        </div>
+
+        {/* ── Section: Analysis ── */}
+        <div className="mx-1 h-px bg-sidebar-border my-2" />
+        <p className="px-3 pt-1 pb-1 text-[10px] font-bold text-sidebar-muted/50 uppercase tracking-wider">التحليلات</p>
+
+        {/* AI Analysis — visually distinct with purple accent */}
+        <button
+          onClick={() => navigate("/ai-analyses")}
+          className={cn(
+            "sidebar-nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-right relative group",
+            aiActive
+              ? "bg-[#8B5CF6]/15 text-sidebar-foreground"
+              : "text-sidebar-muted hover:text-sidebar-foreground/80 hover:bg-sidebar-accent"
+          )}
+        >
+          {aiActive && <span className="sidebar-active-indicator" style={{ backgroundColor: "#8B5CF6" }} />}
+          <div className={cn(
+            "w-[18px] h-[18px] flex-shrink-0 flex items-center justify-center",
+          )}>
+            <Brain className={cn("w-[18px] h-[18px]", aiActive ? "text-[#8B5CF6]" : "text-sidebar-muted group-hover:text-sidebar-foreground/60")} strokeWidth={1.8} />
+          </div>
+          <span className="flex-1 text-[13px] font-bold">التحليل الذكي</span>
+          <Sparkles className={cn("w-3 h-3", aiActive ? "text-[#8B5CF6]" : "text-sidebar-muted/40")} />
+        </button>
+
+        {/* Meltwater Reports — visually distinct with red/pink accent */}
+        <button
+          onClick={() => navigate("/reports")}
+          className={cn(
+            "sidebar-nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-right relative group",
+            reportsActive
+              ? "bg-[#ff0050]/10 text-sidebar-foreground"
+              : "text-sidebar-muted hover:text-sidebar-foreground/80 hover:bg-sidebar-accent"
+          )}
+        >
+          {reportsActive && <span className="sidebar-active-indicator" style={{ backgroundColor: "#ff0050" }} />}
+          <FileBarChart className={cn("w-[18px] h-[18px] flex-shrink-0", reportsActive ? "text-[#ff0050]" : "text-sidebar-muted group-hover:text-sidebar-foreground/60")} strokeWidth={1.8} />
+          <span className="flex-1 text-[13px] font-bold">تقارير Meltwater</span>
+        </button>
+
+        {/* ── Section: Settings ── */}
+        <div className="mx-1 h-px bg-sidebar-border my-2" />
+        <p className="px-3 pt-1 pb-1 text-[10px] font-bold text-sidebar-muted/50 uppercase tracking-wider">النظام</p>
+
+        <button
+          onClick={() => navigate("/settings")}
+          className={cn(
+            "sidebar-nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-right relative group",
+            settingsActive
+              ? "bg-thmanyah-green/10 text-sidebar-foreground"
+              : "text-sidebar-muted hover:text-sidebar-foreground/80 hover:bg-sidebar-accent"
+          )}
+        >
+          {settingsActive && <span className="sidebar-active-indicator" />}
+          <Settings className={cn("w-[18px] h-[18px] flex-shrink-0", settingsActive ? "text-thmanyah-green" : "text-sidebar-muted group-hover:text-sidebar-foreground/60")} strokeWidth={1.8} />
+          <span className="flex-1 text-[13px] font-bold">الإعدادات</span>
+        </button>
       </nav>
 
       {/* Footer */}
