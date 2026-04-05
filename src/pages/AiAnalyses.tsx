@@ -151,13 +151,25 @@ export default function AiAnalyses() {
     if (comments.length === 0) return;
     setResult(null);
     setFilterSentiment(null);
+
+    // If using sample data, just show pre-built results instantly (no API call)
+    if (usingSampleData) {
+      setProgress({ phase: "analyzing", percent: 50, message: "جاري تحليل البيانات التجريبية..." });
+      await new Promise((r) => setTimeout(r, 800));
+      setProgress({ phase: "generating-report", percent: 80, message: "جاري إنشاء التقرير..." });
+      await new Promise((r) => setTimeout(r, 600));
+      setResult(SAMPLE_ANALYSIS_RESULT);
+      setProgress({ phase: "done", percent: 100, message: "اكتمل التحليل!" });
+      return;
+    }
+
     try {
       const res = await runFullAnalysis(comments, setProgress);
       setResult(res);
     } catch (err: any) {
       setProgress({ phase: "error", percent: 0, message: "", error: err.message || "حدث خطأ غير متوقع" });
     }
-  }, [comments]);
+  }, [comments, usingSampleData]);
 
   // Derived data
   const sentimentPieData = useMemo(() => {
