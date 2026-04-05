@@ -117,6 +117,36 @@ const SAMPLE_TWEETS = [
   { id: 33, text: "يوم المباراة ، يوم الهلال ، يوم المتصدر 💙 الهلال vs الفيحاء دوري روشن السعودي", author: "@bufaris9", sentiment: "إيجابي", emotion: "حماس", keywords: ["الهلال", "المتصدر", "دوري روشن"], reach: 2730, engagement: { likes: 0, retweets: 0, replies: 0 } },
   { id: 34, text: "أوه ذا حق اللي طلع مع أبو مالح", author: "@nameless__one1", sentiment: "محايد", emotion: "فضول", keywords: ["أبو مالح"], reach: 581, engagement: { likes: 0, retweets: 0, replies: 0 } },
   { id: 35, text: "قناة ثمانية هلالية ولكن الشكوى لغير الله مذله احمد ربك ما طلعت فضايحكم", author: "@alallah67343", sentiment: "سلبي", emotion: "استياء", keywords: ["هلالية", "فضايح", "شكوى"], reach: 5, engagement: { likes: 0, retweets: 0, replies: 0 } },
+  // Additional positive tweets
+  { id: 36, text: "محتوى ثمانية دائماً يرتقي بالمشاهد العربي، شكراً لكم على هذا الجهد", author: "@fan_2025", sentiment: "إيجابي", emotion: "تقدير", keywords: ["محتوى", "يرتقي", "جهد"], reach: 890, engagement: { likes: 12, retweets: 3, replies: 1 } },
+  { id: 37, text: "أفضل تغطية رياضية شفتها بالسعودية صراحة، الكاميرات والإخراج على مستوى عالمي", author: "@sportsfan_sa", sentiment: "إيجابي", emotion: "إعجاب", keywords: ["تغطية", "إخراج", "عالمي"], reach: 1540, engagement: { likes: 25, retweets: 5, replies: 2 } },
+  { id: 38, text: "ثمانية غيّرت مفهوم الإعلام الرياضي بالمنطقة، استمروا على هذا النهج 🔥", author: "@media_watcher", sentiment: "إيجابي", emotion: "حماس", keywords: ["إعلام رياضي", "غيّرت", "المنطقة"], reach: 2300, engagement: { likes: 40, retweets: 8, replies: 3 } },
+  { id: 39, text: "الحلقة الأخيرة عن تاريخ الكرة السعودية كانت تحفة فنية بكل المقاييس", author: "@history_buff", sentiment: "إيجابي", emotion: "إعجاب", keywords: ["حلقة", "تاريخ", "تحفة فنية"], reach: 670, engagement: { likes: 18, retweets: 4, replies: 0 } },
+  { id: 40, text: "مقابلة اليوم كانت من أجمل المقابلات اللي شفتها، أسئلة ذكية وإجابات عميقة", author: "@interview_fan", sentiment: "إيجابي", emotion: "إعجاب", keywords: ["مقابلة", "أسئلة ذكية", "عميقة"], reach: 1120, engagement: { likes: 30, retweets: 6, replies: 2 } },
+  { id: 41, text: "جودة الصوت والصورة في بث ثمانية أفضل بكثير من المنافسين، أحسنتم", author: "@tech_viewer", sentiment: "إيجابي", emotion: "تقدير", keywords: ["جودة", "صوت", "صورة"], reach: 450, engagement: { likes: 8, retweets: 1, replies: 0 } },
+  { id: 42, text: "كل حلقة جديدة من بودكاست ثمانية أتعلم منها شيء جديد، شكراً للفريق كله", author: "@podcast_lover", sentiment: "إيجابي", emotion: "تقدير", keywords: ["بودكاست", "أتعلم", "فريق"], reach: 3200, engagement: { likes: 55, retweets: 12, replies: 5 } },
+  { id: 43, text: "التعليق الرياضي في ثمانية وصل لمستوى احترافي عالي جداً ما شاء الله", author: "@commentator_fan", sentiment: "إيجابي", emotion: "فخر", keywords: ["تعليق رياضي", "احترافي", "عالي"], reach: 780, engagement: { likes: 14, retweets: 2, replies: 1 } },
+  // Additional negative tweets
+  { id: 44, text: "البث تقطع في أهم لحظة من المباراة، هذا شيء غير مقبول أبداً", author: "@angry_viewer1", sentiment: "سلبي", emotion: "غضب", keywords: ["بث", "تقطع", "غير مقبول"], reach: 1890, engagement: { likes: 45, retweets: 15, replies: 8 } },
+  { id: 45, text: "مستوى التعليق في مباراة اليوم كان ضعيف جداً، نبي معلقين بمستوى أفضل", author: "@match_critic", sentiment: "سلبي", emotion: "إحباط", keywords: ["تعليق", "ضعيف", "معلقين"], reach: 560, engagement: { likes: 10, retweets: 3, replies: 2 } },
+  { id: 46, text: "تطبيق ثمانية يعلق كل ما فتحته، المفروض يشتغلون على تحسين الأداء", author: "@app_user", sentiment: "سلبي", emotion: "إحباط", keywords: ["تطبيق", "يعلق", "أداء"], reach: 340, engagement: { likes: 22, retweets: 7, replies: 4 } },
+  { id: 47, text: "الإعلانات كثيرة جداً في وسط المحتوى، صارت تنفّر المشاهد", author: "@ad_hater", sentiment: "سلبي", emotion: "استياء", keywords: ["إعلانات", "كثيرة", "تنفّر"], reach: 2100, engagement: { likes: 60, retweets: 20, replies: 10 } },
+  { id: 48, text: "سعر الاشتراك مبالغ فيه مقارنة بالمحتوى المقدم، ما يستاهل", author: "@price_critic", sentiment: "سلبي", emotion: "استياء", keywords: ["اشتراك", "مبالغ", "ما يستاهل"], reach: 980, engagement: { likes: 35, retweets: 10, replies: 6 } },
+  { id: 49, text: "التحيز واضح في تغطية المباريات، وين الحيادية؟", author: "@neutral_seeker", sentiment: "سلبي", emotion: "انتقاد", keywords: ["تحيز", "تغطية", "حيادية"], reach: 1450, engagement: { likes: 38, retweets: 12, replies: 7 } },
+  { id: 50, text: "الترجمة في المقاطع الأجنبية سيئة ومليانة أخطاء، لازم يراجعونها", author: "@translation_critic", sentiment: "سلبي", emotion: "انتقاد", keywords: ["ترجمة", "أخطاء", "مراجعة"], reach: 290, engagement: { likes: 8, retweets: 2, replies: 1 } },
+  { id: 51, text: "قناة ثمانية صارت تهتم بالكمية على حساب الجودة، المحتوى ما عاد زي أول", author: "@quality_watcher", sentiment: "سلبي", emotion: "إحباط", keywords: ["كمية", "جودة", "ما عاد زي أول"], reach: 1670, engagement: { likes: 42, retweets: 14, replies: 5 } },
+  // Additional neutral tweets
+  { id: 52, text: "هل عندكم خطة لتغطية كأس آسيا الجاي؟ نبي نعرف", author: "@curious_fan", sentiment: "محايد", emotion: "تساؤل", keywords: ["كأس آسيا", "تغطية", "خطة"], reach: 320, engagement: { likes: 5, retweets: 1, replies: 3 } },
+  { id: 53, text: "أحد يعرف كيف أشترك في ثمانية؟ وش الباقات المتاحة؟", author: "@new_subscriber", sentiment: "محايد", emotion: "طلب", keywords: ["اشتراك", "باقات", "ثمانية"], reach: 150, engagement: { likes: 2, retweets: 0, replies: 5 } },
+  { id: 54, text: "ثمانية نقلت حقوق البث من beIN ولا شلون القصة بالضبط؟", author: "@info_seeker", sentiment: "محايد", emotion: "فضول", keywords: ["حقوق البث", "beIN", "نقل"], reach: 890, engagement: { likes: 3, retweets: 1, replies: 8 } },
+  { id: 55, text: "شفت إعلان ثمانية الجديد، ما عرفت إذا المقصود الرياضة ولا المحتوى العام", author: "@confused_viewer", sentiment: "محايد", emotion: "تساؤل", keywords: ["إعلان", "رياضة", "محتوى عام"], reach: 420, engagement: { likes: 4, retweets: 0, replies: 2 } },
+  { id: 56, text: "مقارنة بين تغطية ثمانية وSSC: كل واحد عنده مميزات وعيوب مختلفة", author: "@sports_analyst", sentiment: "محايد", emotion: "تحليل", keywords: ["مقارنة", "SSC", "مميزات"], reach: 2450, engagement: { likes: 30, retweets: 8, replies: 12 } },
+  { id: 57, text: "أتوقع ثمانية بتوسع تغطيتها لرياضات ثانية غير كرة القدم قريب", author: "@prediction_maker", sentiment: "محايد", emotion: "تحليل", keywords: ["توسع", "رياضات", "كرة القدم"], reach: 560, engagement: { likes: 7, retweets: 2, replies: 3 } },
+  { id: 58, text: "سمعت إن ثمانية بتطلق بودكاست رياضي جديد، أحد عنده تفاصيل؟", author: "@podcast_seeker", sentiment: "محايد", emotion: "فضول", keywords: ["بودكاست", "رياضي", "جديد"], reach: 280, engagement: { likes: 6, retweets: 1, replies: 4 } },
+  { id: 59, text: "لاحظت إن تعليقات ثمانية على تويتر كلها رياضة، وين المحتوى الثقافي؟", author: "@culture_fan", sentiment: "محايد", emotion: "تساؤل", keywords: ["تعليقات", "رياضة", "محتوى ثقافي"], reach: 190, engagement: { likes: 3, retweets: 0, replies: 2 } },
+  { id: 60, text: "ثمانية عندها 5 ملايين متابع الحين، رقم كبير بس السؤال هل المحتوى يتطور بنفس السرعة؟", author: "@growth_tracker", sentiment: "محايد", emotion: "تحليل", keywords: ["متابعين", "محتوى", "تطور"], reach: 1340, engagement: { likes: 15, retweets: 4, replies: 6 } },
+  { id: 61, text: "الدوري السعودي هالسنة أقوى من السنوات الماضية، والمنافسة على البث تزيد", author: "@league_observer", sentiment: "محايد", emotion: "تحليل", keywords: ["الدوري", "منافسة", "بث"], reach: 730, engagement: { likes: 9, retweets: 3, replies: 1 } },
+  { id: 62, text: "وش رأيكم في تجربة ثمانية بشكل عام؟ أبي أسمع آراء مختلفة قبل ما أشترك", author: "@opinion_seeker", sentiment: "محايد", emotion: "طلب", keywords: ["تجربة", "آراء", "اشتراك"], reach: 470, engagement: { likes: 11, retweets: 2, replies: 15 } },
 ];
 
 type Tweet = typeof SAMPLE_TWEETS[number];
@@ -253,7 +283,7 @@ const MeltwaterReport = () => {
 
   // AI Analysis — parallel batches, skip-on-error, auto-save progress
   const handleStartAnalysis = async () => {
-    if (!importedTweets) return;
+    const tweetsToAnalyze = importedTweets || SAMPLE_TWEETS;
 
     const keys = loadApiKeys();
     if (!keys.openrouter) {
@@ -269,7 +299,7 @@ const MeltwaterReport = () => {
 
     const BATCH_SIZE = 8;
     const PARALLEL = 5;
-    const analyzed = [...importedTweets];
+    const analyzed = [...tweetsToAnalyze];
 
     // Build batch list: [ { startIdx, tweets[] }, ... ]
     const batches: { startIdx: number; tweets: Tweet[] }[] = [];
@@ -567,8 +597,28 @@ ${sampleNeg.map((t, i) => `${i + 1}. ${t}`).join('\n')}
       </div>
 
       {/* ── Analysis Controls ── */}
-      {analysisState !== 'idle' && (
         <div className="card-stagger rounded-2xl bg-card border border-border/40 p-6 text-center space-y-4" style={{ animationDelay: "0.15s" }}>
+          {analysisState === 'idle' && (
+            <>
+              <div className="flex items-center justify-center gap-2 text-thmanyah-blue mb-2">
+                <BarChart3 className="w-5 h-5" />
+                <span className="text-[14px] font-bold">البيانات التجريبية جاهزة — {SAMPLE_TWEETS.length} تغريدة</span>
+              </div>
+              <div className="flex items-center justify-center gap-3">
+                <button
+                  onClick={handleStartAnalysis}
+                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl bg-thmanyah-green text-white font-bold text-[15px] hover:bg-thmanyah-green/90 transition-all shadow-lg shadow-thmanyah-green/20"
+                >
+                  <Play className="w-5 h-5" />
+                  ابدأ التحليل
+                </button>
+              </div>
+              <p className="text-[11px] font-bold text-muted-foreground/40">
+                حلل البيانات التجريبية باستخدام الذكاء الاصطناعي أو استورد بياناتك الخاصة أعلاه
+              </p>
+            </>
+          )}
+
           {analysisState === 'ready' && (
             <>
               <div className="flex items-center justify-center gap-2 text-thmanyah-green mb-2">
@@ -650,7 +700,6 @@ ${sampleNeg.map((t, i) => `${i + 1}. ${t}`).join('\n')}
             </div>
           )}
         </div>
-      )}
 
       {/* ══════════════════════════════════════════
           SECTION: Overview
