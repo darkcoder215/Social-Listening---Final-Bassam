@@ -1,16 +1,20 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import AppSidebar from "./AppSidebar";
 import { useEffect, useState } from "react";
 import { DateRangeProvider } from "@/contexts/DateRangeContext";
+import { Brain } from "lucide-react";
 
 export default function AppLayout() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [pageKey, setPageKey] = useState(location.pathname);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     setPageKey(location.pathname);
   }, [location.pathname]);
+
+  const showAiFab = location.pathname !== "/ai-analyses";
 
   return (
     <DateRangeProvider>
@@ -30,6 +34,18 @@ export default function AppLayout() {
             <Outlet />
           </div>
         </main>
+
+        {/* Floating AI Analysis button — left side (appears on left in RTL) */}
+        {showAiFab && (
+          <button
+            onClick={() => navigate("/ai-analyses")}
+            className="fixed left-6 bottom-6 z-50 flex items-center gap-2 px-4 py-3 rounded-2xl bg-[#8B5CF6] text-white shadow-lg shadow-[#8B5CF6]/25 hover:brightness-110 hover:scale-105 transition-all duration-200 group"
+            title="التحليل الذكي"
+          >
+            <Brain className="w-5 h-5" strokeWidth={1.8} />
+            <span className="text-[13px] font-bold">التحليل الذكي</span>
+          </button>
+        )}
       </div>
     </DateRangeProvider>
   );
