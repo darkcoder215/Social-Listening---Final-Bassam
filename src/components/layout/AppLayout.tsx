@@ -14,7 +14,7 @@ export default function AppLayout() {
     setPageKey(location.pathname);
   }, [location.pathname]);
 
-  const isReportsPage = location.pathname === "/reports";
+  const isAiPage = location.pathname === "/ai-analysis";
 
   return (
     <DateRangeProvider>
@@ -35,10 +35,10 @@ export default function AppLayout() {
           </div>
         </main>
 
-        {/* Floating AI Analysis button — hidden on the reports page itself */}
-        {!isReportsPage && (
+        {/* Floating AI Analysis button — hidden on the AI analysis page itself */}
+        {!isAiPage && (
           <button
-            onClick={() => navigate("/reports")}
+            onClick={() => navigate("/ai-analysis")}
             className="fixed left-6 bottom-6 z-50 flex items-center gap-2 px-5 py-3.5 rounded-2xl bg-gradient-to-l from-amber-500 to-amber-600 text-white font-bold text-[13px] shadow-xl shadow-amber-500/25 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-105 transition-all duration-300 group"
             title="التحليل بالذكاء الاصطناعي"
           >
@@ -61,7 +61,8 @@ function PageTitle() {
     "/explore/instagram": "Instagram",
     "/explore/youtube": "YouTube",
     "/explore/x": "X",
-    "/reports": "التحليل بالذكاء الاصطناعي",
+    "/ai-analysis": "التحليل بالذكاء الاصطناعي",
+    "/reports": "تقارير Meltwater",
     "/settings": "الإعدادات",
   };
 

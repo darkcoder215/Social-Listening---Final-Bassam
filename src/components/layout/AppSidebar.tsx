@@ -34,8 +34,13 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   {
-    labelAr: "التحليل والتقارير",
+    labelAr: "التحليل بالذكاء الاصطناعي",
     icon: Sparkles,
+    path: "/ai-analysis",
+  },
+  {
+    labelAr: "تقارير Meltwater",
+    icon: FileBarChart,
     path: "/reports",
   },
   {

@@ -18,6 +18,7 @@ import {
   Play,
   Clock,
   Trash2,
+  Sparkles,
 } from 'lucide-react';
 import PageExplainer from '@/components/PageExplainer';
 import { SentimentPieChart } from '@/components/SentimentPieChart';
@@ -182,7 +183,7 @@ const SECTIONS = [
    Component
    ══════════════════════════════════════════════════════════════ */
 
-const MeltwaterReport = () => {
+const AiAnalysis = () => {
   const [activeSection, setActiveSection] = useState("overview");
   const [selectedSentiment, setSelectedSentiment] = useState<string | null>(null);
   const mainRef = useRef<HTMLDivElement>(null);
@@ -283,7 +284,7 @@ const MeltwaterReport = () => {
 
   // AI Analysis — parallel batches, skip-on-error, auto-save progress
   const handleStartAnalysis = async () => {
-    if (!importedTweets) return;
+    const tweetsToAnalyze = importedTweets || SAMPLE_TWEETS;
 
     const keys = loadApiKeys();
     if (!keys.openrouter) {
@@ -299,7 +300,7 @@ const MeltwaterReport = () => {
 
     const BATCH_SIZE = 8;
     const PARALLEL = 5;
-    const analyzed = [...importedTweets];
+    const analyzed = [...tweetsToAnalyze];
 
     // Build batch list: [ { startIdx, tweets[] }, ... ]
     const batches: { startIdx: number; tweets: Tweet[] }[] = [];
@@ -511,10 +512,10 @@ ${sampleNeg.map((t, i) => `${i + 1}. ${t}`).join('\n')}
     <div ref={mainRef} className="max-w-7xl mx-auto space-y-8">
       {/* ── Page Header ── */}
       <PageExplainer
-        icon={BarChart3}
-        title="تقارير Meltwater"
-        description="عرض تفاعلي شامل يتضمن تحليل المشاعر والاتجاهات والرسوم البيانية من تقارير Meltwater"
-        color="#8B5CF6"
+        icon={Sparkles}
+        title="التحليل بالذكاء الاصطناعي"
+        description="حلل التغريدات والمنشورات باستخدام نماذج الذكاء الاصطناعي واحصل على تحليل المشاعر والرؤى والتوصيات فوراً"
+        color="#F59E0B"
       />
 
       {/* ── Previous Reports ── */}
@@ -597,8 +598,28 @@ ${sampleNeg.map((t, i) => `${i + 1}. ${t}`).join('\n')}
       </div>
 
       {/* ── Analysis Controls ── */}
-      {analysisState !== 'idle' && (
         <div className="card-stagger rounded-2xl bg-card border border-border/40 p-6 text-center space-y-4" style={{ animationDelay: "0.15s" }}>
+          {analysisState === 'idle' && (
+            <>
+              <div className="flex items-center justify-center gap-2 text-amber-500 mb-2">
+                <Sparkles className="w-5 h-5" />
+                <span className="text-[14px] font-bold">البيانات التجريبية جاهزة — {SAMPLE_TWEETS.length} منشور</span>
+              </div>
+              <div className="flex items-center justify-center gap-3">
+                <button
+                  onClick={handleStartAnalysis}
+                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-2xl bg-gradient-to-l from-amber-500 to-amber-600 text-white font-bold text-[15px] hover:from-amber-600 hover:to-amber-700 transition-all shadow-lg shadow-amber-500/20"
+                >
+                  <Play className="w-5 h-5" />
+                  ابدأ التحليل
+                </button>
+              </div>
+              <p className="text-[11px] font-bold text-muted-foreground/40">
+                حلل البيانات التجريبية باستخدام الذكاء الاصطناعي أو استورد بياناتك الخاصة أعلاه
+              </p>
+            </>
+          )}
+
           {analysisState === 'ready' && (
             <>
               <div className="flex items-center justify-center gap-2 text-thmanyah-green mb-2">
@@ -680,13 +701,12 @@ ${sampleNeg.map((t, i) => `${i + 1}. ${t}`).join('\n')}
             </div>
           )}
         </div>
-      )}
 
       {/* ══════════════════════════════════════════
           SECTION: Overview
           ══════════════════════════════════════════ */}
       <section id="overview" className="scroll-mt-32 space-y-5">
-        <SectionHeading icon={BarChart3} color="#8B5CF6">نظرة عامة</SectionHeading>
+        <SectionHeading icon={BarChart3} color="#F59E0B">نظرة عامة</SectionHeading>
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <KpiCard label="التغريدات المحللة" value={String(totalTweets)} sub={`من أصل ${originalCount} (إزالة ${duplicatesRemoved} مكرر)`} color="#8B5CF6" delay={0} />
@@ -1044,7 +1064,7 @@ ${sampleNeg.map((t, i) => `${i + 1}. ${t}`).join('\n')}
   );
 };
 
-export default MeltwaterReport;
+export default AiAnalysis;
 
 /* ══════════════════════════════════════════════════════════════
    Sub-components

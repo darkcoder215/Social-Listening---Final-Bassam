@@ -15,9 +15,17 @@ const SECTIONS = [
     labelAr: "التحليل بالذكاء الاصطناعي",
     description: "حلل التغريدات والمنشورات باستخدام الذكاء الاصطناعي واحصل على تقارير وتحليلات فورية",
     icon: Sparkles,
-    path: "/reports",
+    path: "/ai-analysis",
     color: "#F59E0B",
     bgClass: "from-amber-500/[0.06] to-amber-500/[0.02]",
+  },
+  {
+    labelAr: "تقارير Meltwater",
+    description: "عرض وتحليل تقارير الرصد الاجتماعي من Meltwater",
+    icon: FileBarChart,
+    path: "/reports",
+    color: "#8B5CF6",
+    bgClass: "from-purple-500/[0.06] to-purple-500/[0.02]",
   },
   {
     labelAr: "الإعدادات",
