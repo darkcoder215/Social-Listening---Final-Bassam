@@ -8,6 +8,13 @@ import type {
   TopPost,
   AccountCount,
 } from "@/lib/db-types";
+import {
+  DUMMY_INSTAGRAM_COMMENTS,
+  DUMMY_INSTAGRAM_STATS,
+  DUMMY_INSTAGRAM_CHART,
+  DUMMY_INSTAGRAM_TOP_POSTS,
+  DUMMY_INSTAGRAM_ACCOUNTS,
+} from "@/lib/dummy-platform-data";
 
 interface QueryOpts {
   account?: string;
@@ -39,6 +46,7 @@ export function useInstagramStats(opts: QueryOpts) {
       const { data, error } = await q;
       if (error) throw error;
       const posts = data || [];
+      if (posts.length === 0) return DUMMY_INSTAGRAM_STATS;
       return {
         total_posts: posts.length,
         total_likes: posts.reduce((s: number, p: any) => s + (p.post_likes_count || 0), 0),
@@ -110,6 +118,10 @@ export function useInstagramComments(opts: CommentOpts) {
       if (error) throw error;
       const rows = (comments || []) as InstagramCommentRow[];
 
+      if (rows.length === 0 && pageParam === 0) {
+        return { items: DUMMY_INSTAGRAM_COMMENTS, total: DUMMY_INSTAGRAM_COMMENTS.length, page: 0 };
+      }
+
       // Batch-fetch parent post info
       const postIds = [...new Set(rows.map((c) => c.post_id).filter(Boolean))] as string[];
       const postMap = new Map<string, { text: string; url: string; thumbnail: string }>();
@@ -167,8 +179,9 @@ export function useInstagramCommentsPerDay(opts: QueryOpts) {
       if (dateTo) q = q.lte("post_timestamp", dateTo);
       const { data, error } = await q;
       if (error) throw error;
+      if (!data || data.length === 0) return DUMMY_INSTAGRAM_CHART;
       const perDay: Record<string, number> = {};
-      for (const row of data || []) {
+      for (const row of data) {
         const day = row.post_timestamp?.split("T")[0];
         if (day) perDay[day] = (perDay[day] || 0) + (row.post_comments_count || 0);
       }
@@ -196,7 +209,8 @@ export function useInstagramTopPosts(opts: QueryOpts & { limit?: number }) {
       if (dateTo) q = q.lte("post_timestamp", dateTo);
       const { data, error } = await q;
       if (error) throw error;
-      return ((data || []) as any[]).map((p) => ({
+      if (!data || data.length === 0) return DUMMY_INSTAGRAM_TOP_POSTS;
+      return ((data) as any[]).map((p) => ({
         id: p.post_id,
         text: p.post_caption || "",
         url: p.post_url || "",
@@ -227,8 +241,9 @@ export function useInstagramPostsPerDay(opts: QueryOpts) {
       if (dateTo) q = q.lte("post_timestamp", dateTo);
       const { data, error } = await q;
       if (error) throw error;
+      if (!data || data.length === 0) return DUMMY_INSTAGRAM_CHART;
       const perDay: Record<string, number> = {};
-      for (const row of data || []) {
+      for (const row of data) {
         const day = row.post_timestamp?.split("T")[0];
         if (day) perDay[day] = (perDay[day] || 0) + 1;
       }
@@ -253,8 +268,9 @@ export function useInstagramCommentsPerAccount(opts: { dateFrom?: string; dateTo
       if (dateTo) q = q.lte("post_timestamp", dateTo);
       const { data, error } = await q;
       if (error) throw error;
+      if (!data || data.length === 0) return DUMMY_INSTAGRAM_ACCOUNTS;
       const counts: Record<string, { ar: string; count: number }> = {};
-      for (const row of data || []) {
+      for (const row of data) {
         const acc = row.account_username || "";
         if (!counts[acc]) counts[acc] = { ar: row.account_name_ar || "", count: 0 };
         counts[acc].count += row.post_comments_count || 0;

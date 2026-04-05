@@ -8,6 +8,13 @@ import type {
   TopPost,
   AccountCount,
 } from "@/lib/db-types";
+import {
+  DUMMY_TIKTOK_COMMENTS,
+  DUMMY_TIKTOK_STATS,
+  DUMMY_TIKTOK_CHART,
+  DUMMY_TIKTOK_TOP_POSTS,
+  DUMMY_TIKTOK_ACCOUNTS,
+} from "@/lib/dummy-platform-data";
 
 interface QueryOpts {
   account?: string;
@@ -39,6 +46,7 @@ export function useTikTokStats(opts: QueryOpts) {
       const { data, error } = await q;
       if (error) throw error;
       const posts = data || [];
+      if (posts.length === 0) return DUMMY_TIKTOK_STATS;
       return {
         total_posts: posts.length,
         total_likes: posts.reduce((s: number, p: any) => s + (p.post_like_count || 0), 0),
@@ -110,6 +118,11 @@ export function useTikTokComments(opts: CommentOpts) {
       if (error) throw error;
       const rows = (comments || []) as TikTokCommentRow[];
 
+      // Fallback to dummy data if no rows
+      if (rows.length === 0 && pageParam === 0) {
+        return { items: DUMMY_TIKTOK_COMMENTS, total: DUMMY_TIKTOK_COMMENTS.length, page: 0 };
+      }
+
       // Batch-fetch parent post info
       const postIds = [...new Set(rows.map((c) => c.post_id).filter(Boolean))] as string[];
       const postMap = new Map<string, { text: string; url: string }>();
@@ -165,8 +178,9 @@ export function useTikTokCommentsPerDay(opts: QueryOpts) {
       if (dateTo) q = q.lte("post_create_time", dateTo);
       const { data, error } = await q;
       if (error) throw error;
+      if (!data || data.length === 0) return DUMMY_TIKTOK_CHART;
       const perDay: Record<string, number> = {};
-      for (const row of data || []) {
+      for (const row of data) {
         const day = row.post_create_time?.split("T")[0];
         if (day) perDay[day] = (perDay[day] || 0) + (row.post_comment_count || 0);
       }
@@ -194,7 +208,8 @@ export function useTikTokTopPosts(opts: QueryOpts & { limit?: number }) {
       if (dateTo) q = q.lte("post_create_time", dateTo);
       const { data, error } = await q;
       if (error) throw error;
-      return ((data || []) as any[]).map((p) => ({
+      if (!data || data.length === 0) return DUMMY_TIKTOK_TOP_POSTS;
+      return ((data) as any[]).map((p) => ({
         id: p.post_id,
         text: p.post_description || "",
         url: p.post_url || "",
@@ -225,8 +240,9 @@ export function useTikTokPostsPerDay(opts: QueryOpts) {
       if (dateTo) q = q.lte("post_create_time", dateTo);
       const { data, error } = await q;
       if (error) throw error;
+      if (!data || data.length === 0) return DUMMY_TIKTOK_CHART;
       const perDay: Record<string, number> = {};
-      for (const row of data || []) {
+      for (const row of data) {
         const day = row.post_create_time?.split("T")[0];
         if (day) perDay[day] = (perDay[day] || 0) + 1;
       }
@@ -251,8 +267,9 @@ export function useTikTokCommentsPerAccount(opts: { dateFrom?: string; dateTo?: 
       if (dateTo) q = q.lte("post_create_time", dateTo);
       const { data, error } = await q;
       if (error) throw error;
+      if (!data || data.length === 0) return DUMMY_TIKTOK_ACCOUNTS;
       const counts: Record<string, { ar: string; count: number }> = {};
-      for (const row of data || []) {
+      for (const row of data) {
         const acc = row.account_username || "";
         if (!counts[acc]) counts[acc] = { ar: row.account_name_ar || "", count: 0 };
         counts[acc].count += row.post_comment_count || 0;

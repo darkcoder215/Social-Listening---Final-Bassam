@@ -8,6 +8,12 @@ import type {
   TopPost,
   AccountCount,
 } from "@/lib/db-types";
+import {
+  DUMMY_YOUTUBE_COMMENTS,
+  DUMMY_YOUTUBE_STATS,
+  DUMMY_YOUTUBE_TOP_POSTS,
+  DUMMY_YOUTUBE_ACCOUNTS,
+} from "@/lib/dummy-platform-data";
 
 interface QueryOpts {
   account?: string;
@@ -38,6 +44,7 @@ export function useYouTubeStats(opts: QueryOpts) {
       if (dateTo) q = q.lte("comment_published_at", dateTo);
       const { count, error } = await q;
       if (error) throw error;
+      if (!count || count === 0) return DUMMY_YOUTUBE_STATS;
       return {
         total_posts: 0,
         total_comments: count ?? 0,
@@ -109,6 +116,10 @@ export function useYouTubeComments(opts: CommentOpts) {
       if (error) throw error;
       const rows = (comments || []) as YouTubeDataRow[];
 
+      if (rows.length === 0 && pageParam === 0) {
+        return { items: DUMMY_YOUTUBE_COMMENTS, total: DUMMY_YOUTUBE_COMMENTS.length, page: 0 };
+      }
+
       const items: EnrichedComment[] = rows.map((c) => ({
         id: c.comment_id,
         text: c.comment_text || "",
@@ -165,10 +176,11 @@ export function useYouTubeTopPosts(opts: QueryOpts & { limit?: number }) {
       if (dateTo) q = q.lte("comment_published_at", dateTo);
       const { data, error } = await q;
       if (error) throw error;
+      if (!data || data.length === 0) return DUMMY_YOUTUBE_TOP_POSTS;
 
       // Deduplicate by video_id and pick highest engagement
       const videoMap = new Map<string, any>();
-      for (const row of data || []) {
+      for (const row of data) {
         if (!row.video_id || videoMap.has(row.video_id)) continue;
         videoMap.set(row.video_id, row);
       }
@@ -216,7 +228,8 @@ export function useYouTubeCommentsPerAccount(opts: { dateFrom?: string; dateTo?:
         }
       }
 
-      return results.sort((a, b) => b.count - a.count);
+      const sorted = results.sort((a, b) => b.count - a.count);
+      return sorted.length > 0 ? sorted : DUMMY_YOUTUBE_ACCOUNTS;
     },
     ...QUERY_DEFAULTS,
   });
