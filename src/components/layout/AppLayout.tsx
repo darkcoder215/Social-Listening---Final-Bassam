@@ -1,16 +1,20 @@
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import AppSidebar from "./AppSidebar";
 import { useEffect, useState } from "react";
 import { DateRangeProvider } from "@/contexts/DateRangeContext";
+import { Sparkles } from "lucide-react";
 
 export default function AppLayout() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [pageKey, setPageKey] = useState(location.pathname);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     setPageKey(location.pathname);
   }, [location.pathname]);
+
+  const isReportsPage = location.pathname === "/reports";
 
   return (
     <DateRangeProvider>
@@ -30,6 +34,18 @@ export default function AppLayout() {
             <Outlet />
           </div>
         </main>
+
+        {/* Floating AI Analysis button — hidden on the reports page itself */}
+        {!isReportsPage && (
+          <button
+            onClick={() => navigate("/reports")}
+            className="fixed left-6 bottom-6 z-50 flex items-center gap-2 px-5 py-3.5 rounded-2xl bg-gradient-to-l from-amber-500 to-amber-600 text-white font-bold text-[13px] shadow-xl shadow-amber-500/25 hover:shadow-2xl hover:shadow-amber-500/30 hover:scale-105 transition-all duration-300 group"
+            title="التحليل بالذكاء الاصطناعي"
+          >
+            <Sparkles className="w-5 h-5 group-hover:animate-pulse" />
+            <span>التحليل بالذكاء الاصطناعي</span>
+          </button>
+        )}
       </div>
     </DateRangeProvider>
   );
@@ -45,7 +61,7 @@ function PageTitle() {
     "/explore/instagram": "Instagram",
     "/explore/youtube": "YouTube",
     "/explore/x": "X",
-    "/reports": "التقارير",
+    "/reports": "التحليل بالذكاء الاصطناعي",
     "/settings": "الإعدادات",
   };
 

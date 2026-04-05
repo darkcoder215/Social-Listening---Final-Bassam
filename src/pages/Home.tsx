@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Compass, FileBarChart, Settings, ArrowLeft } from "lucide-react";
+import { Compass, FileBarChart, Settings, ArrowLeft, Sparkles } from "lucide-react";
 import SpaceHero from "@/components/SpaceHero";
 
 const SECTIONS = [
@@ -12,12 +12,12 @@ const SECTIONS = [
     bgClass: "from-[#00C17A]/[0.06] to-[#00C17A]/[0.02]",
   },
   {
-    labelAr: "التقارير",
-    description: "عرض وتحليل تقارير الرصد الاجتماعي من Meltwater",
-    icon: FileBarChart,
+    labelAr: "التحليل بالذكاء الاصطناعي",
+    description: "حلل التغريدات والمنشورات باستخدام الذكاء الاصطناعي واحصل على تقارير وتحليلات فورية",
+    icon: Sparkles,
     path: "/reports",
-    color: "#8B5CF6",
-    bgClass: "from-purple-500/[0.06] to-purple-500/[0.02]",
+    color: "#F59E0B",
+    bgClass: "from-amber-500/[0.06] to-amber-500/[0.02]",
   },
   {
     labelAr: "الإعدادات",

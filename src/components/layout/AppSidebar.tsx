@@ -7,6 +7,7 @@ import {
   Home,
   PanelLeftClose,
   PanelLeftOpen,
+  Sparkles,
 } from "lucide-react";
 import { useState } from "react";
 import { useTheme } from "next-themes";
@@ -33,8 +34,8 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   {
-    labelAr: "التقارير",
-    icon: FileBarChart,
+    labelAr: "التحليل والتقارير",
+    icon: Sparkles,
     path: "/reports",
   },
   {
